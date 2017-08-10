@@ -6,10 +6,10 @@ const { exec } = require('child_process');
 
 const self = module.exports = {
 
-  createHtmlFile: function(bodyHtml, filename) {
+  createHtmlFile: function(content, filename) {
       const htmlFilePath = os.tmpdir() + '/' + filename + '.html';
 
-      fs.writeFile(htmlFilePath, bodyHtml, function(err) {
+      fs.writeFile(htmlFilePath, content, function(err) {
           if(err) {
             console.error('Error creating .html file: ', err);
             return;
@@ -20,15 +20,25 @@ const self = module.exports = {
         return htmlFilePath;
   },
 
-  convertMailBodyToPdf: function(bodyHtml, filename, chromeBinary = '\0', outputPath = os.tmpdir() + '/') {
+  removeHtmlFile: function(htmlfile) {
+    return new Promise(function (resolve, reject) {
+      exec('rm ' + htmlfile, (err, stdout, stderr) => {
+        if(err) reject(err);
+        console.log('HTML file removed!');
+        resolve(stdout);
+      });
+    });
+  },
+
+  convertMailBodyToPdf: function(content, filename, removeflag = true, chromeBinary = '\0', outputPath = os.tmpdir() + '/') {
       return new Promise(function (resolve, reject) {
           const pdfFilePath   = outputPath + filename + '.pdf',
-              htmlFilePath = 'file://' + self.createHtmlFile(bodyHtml, filename);
+              htmlFilePath = self.createHtmlFile(content, filename);
           var CLI_ARGS = [
               '--headless',
               '--disable-gpu',
               '--print-to-pdf=' + pdfFilePath,
-              htmlFilePath
+              'file://' + htmlFilePath
           ];
 
         //  If the chrome-binary name is not provided,
@@ -37,6 +47,7 @@ const self = module.exports = {
             binaryFinder.findChromeBinary().then((result) => {
               self.createPdfFile(result.concat(CLI_ARGS)).then(() => {
                 self.createPdfReadStream(pdfFilePath).then((readstream) => {
+                  if(removeflag) self.removeHtmlFile(htmlFilePath);
                   resolve(readstream);
                 })
                 .catch((error) => {
@@ -53,6 +64,7 @@ const self = module.exports = {
         else
             self.createPdfFile([chromeBinary].concat(CLI_ARGS)).then(() => {
               self.createPdfReadStream(pdfFilePath).then((readstream) => {
+                if(removeflag) self.removeHtmlFile(htmlFilePath);
                 resolve(readstream);
               })
               .catch((error) => {
@@ -74,7 +86,7 @@ createPdfReadStream: function(pdfFilePath) {
           const readstream = fs.createReadStream(pdfFilePath);
           fulfill(readstream);
 
-          console.log('PDF file created');
+          console.log('PDF file created!');
           clearInterval(interval);
         }
       }, 1000);
