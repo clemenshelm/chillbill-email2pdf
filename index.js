@@ -38,7 +38,7 @@ function MailConverter() {
         fileOps.printHTMLtoPdf([chromeBinary].concat(CLI_ARGS),
           pdfFilePath, htmlFilePath, removeflag)
           .then((readStream) => { resolve(readStream); })
-          .catch((error) => { reject('Chrome not found! Try this option: google-chrome'); });
+          .catch((error) => { reject('Couldn\'t find chrome on the system!'); });
       }
     });
   };

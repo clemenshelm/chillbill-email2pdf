@@ -27,7 +27,7 @@ function FileOps() {
           resolve(readstream);
           clearInterval(interval);
         }
-      }, 1000);
+      }, 500);
     });
   };
 
