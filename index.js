@@ -6,22 +6,28 @@ const fileOps = new FileOps();
 const binaryFinder = new BinaryFinder();
 
 function MailConverter() {
-  this.convertMailBodyToPdf = function (content, filename, outputPath, removeflag, chromeBinary) {
+  this.convertMailBodyToPdf = function convertMailBodyToPdf(content, filename,
+    outputPath, removeflag, chromeBinary) {
     return new Promise((resolve, reject) => {
+      let opath;
+      let rmflag = removeflag;
 
-      if(!filename)
-        reject("Filename not specified!");
+      if (!filename) {
+        reject('Filename not specified!');
+      }
 
-      if(typeof removeflag == 'undefined' || removeflag == null)
-        removeflag = true;
+      if (typeof rmflag === 'undefined' || rmflag == null) {
+        rmflag = true;
+      }
 
-      if(!outputPath)
-        outputPath = `${os.tmpdir()}${'/'}`;
-      else
-        outputPath += '/';
+      if (!opath) {
+        opath = `${os.tmpdir()}${'/'}`;
+      } else {
+        opath += '/';
+      }
 
-      const pdfFilePath = `${outputPath}${filename}${'.pdf'}`;
-      const htmlFilePath = fileOps.createHtmlFile(content, filename, outputPath);
+      const pdfFilePath = `${opath}${filename}${'.pdf'}`;
+      const htmlFilePath = fileOps.createHtmlFile(content, filename, opath);
       const CLI_ARGS = [
         '--headless',
         '--disable-gpu',
@@ -33,7 +39,7 @@ function MailConverter() {
         //  If the chrome-binary name is not provided,
         //  look it up and print the .pdf.
         binaryFinder.findChromeBinary().then((result) => {
-          fileOps.printHTMLtoPdf(result.concat(CLI_ARGS), pdfFilePath, htmlFilePath, removeflag)
+          fileOps.printHTMLtoPdf(result.concat(CLI_ARGS), pdfFilePath, htmlFilePath, rmflag)
             .then((readStream) => { resolve(readStream); })
             .catch((readStreamError) => { reject(readStreamError); });
         }).catch((error) => { reject(error); });
@@ -43,9 +49,9 @@ function MailConverter() {
         fileOps.printHTMLtoPdf([chromeBinary].concat(CLI_ARGS),
           pdfFilePath, htmlFilePath, removeflag)
           .then((readStream) => { resolve(readStream); })
-          .catch((error) => { reject('Couldn\'t find chrome on the system!'); });
+          .catch((error) => { reject(error); });
       }
-    }).catch((error) => console.error(error));
+    }).catch((error) => { throw error; });
   };
 }
 

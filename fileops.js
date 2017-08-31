@@ -1,6 +1,5 @@
 const commands = require('child_process');
 const fs = require('fs');
-const os = require('os');
 
 function FileOps() {
   this.createHtmlFile = function createHtmlFile(content, filename, filepath) {
