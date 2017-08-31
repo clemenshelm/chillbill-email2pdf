@@ -35,7 +35,7 @@ function FileOps() {
     return new Promise((resolve, reject) => {
       commands.exec(chromeCommand.join(' '), (err) => {
         if (err) reject(err);
-        resolve('Done');
+        resolve('PDF file created!');
       });
     });
   };

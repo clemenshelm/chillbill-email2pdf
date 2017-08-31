@@ -1,0 +1,25 @@
+root: true
+
+parser: "babel-eslint"
+
+parserOptions:
+  allowImportExportEverywhere: true
+
+extends:
+  - airbnb
+
+rules:
+  no-underscore-dangle:
+    - error
+    - allow: ["_id"]
+  import/no-extraneous-dependencies:
+    - warn
+  import/no-unresolved:
+    - warn
+  import/no-absolute-path:
+    - off
+  import/extensions:
+    - off
+  comma-dangle:
+    - off
+    - functions
