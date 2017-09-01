@@ -1,5 +1,5 @@
 {
-  "name": "chillbill-email2pdf",
+  "name": "email2pdf",
   "version": "1.0.0",
   "description": "Converter for E-Mail HTML to PDF",
   "main": "index.js",
