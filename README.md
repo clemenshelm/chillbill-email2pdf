@@ -57,11 +57,11 @@ mail2pdf.convertMailBodyToPdf(content, filename, outputPath, removeFlag, chromeB
 
 ```javascript
 const http = require('http');
-const mail2pdf = require('email2pdf');
+const Mail2PDF = require('email2pdf');
 const Busboy = require('busboy');
 const body = {};
 
-const mailtopdf = new MailConverter();
+const mailtopdf = new Mail2PDF();
 http.createServer(function(req, res) {
   if (req.method === 'POST') {
     var busboy = new Busboy({ headers: req.headers });
