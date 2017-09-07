@@ -73,7 +73,7 @@ http.createServer(function(req, res) {
 
     busboy.on('finish', function() {
       //
-      mail2pdf.convertMailBodyToPdf(body['body-html'], 'output', null, false)
+      mailtopdf.convertMailBodyToPdf(body['body-html'], 'output', null, false)
         .then((result) => {
         // Note: 'result' is a read-stream to the .pdf
         result.on('data', (bytes) => {
