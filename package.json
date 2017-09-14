@@ -1,6 +1,6 @@
 {
   "name": "email2pdf",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Converter for E-Mail HTML to PDF",
   "main": "index.js",
   "directories": {
@@ -8,12 +8,6 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "babel-eslint": "^7.2.1",
-    "eslint": "^4.2.0",
-    "eslint-config-airbnb": "^15.0.1",
-    "eslint-plugin-import": "^2.6.0",
-    "eslint-plugin-jsx-a11y": "^5.1.0",
-    "eslint-plugin-react": "^7.1.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
